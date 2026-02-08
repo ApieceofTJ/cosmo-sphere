@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMember } from '@/integrations';
 import Header from '@/components/Header';
@@ -7,7 +7,14 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 export default function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(true);
-  const { actions, isLoading } = useMember();
+  const { actions, isLoading, member } = useMember();
+
+  useEffect(() => {
+    // Redirect to external URL after successful signup
+    if (member && !isLoading) {
+      window.location.href = 'https://mindmapmaker.streamlit.app';
+    }
+  }, [member, isLoading]);
 
   const handleAuth = () => {
     actions.login();
